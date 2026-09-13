@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { saveUser, getUserId, getUsername } from "@/lib/localStorage";
 import { useChatStore } from "@/store/chatStore";
 
-export default function AuthPage() {
+function AuthForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { dispatch } = useChatStore();
@@ -207,5 +207,17 @@ export default function AuthPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg-base)" }}>
+        <div style={{ color: "var(--text-muted)" }}>Loading...</div>
+      </div>
+    }>
+      <AuthForm />
+    </Suspense>
   );
 }
