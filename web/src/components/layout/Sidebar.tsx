@@ -1,36 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
 import RoomList from "./RoomList";
 import UserSection from "./UserSection";
 import CreateRoomModal from "@/components/modals/CreateRoomModal";
 import JoinRoomModal from "@/components/modals/JoinRoomModal";
 import SettingsModal from "@/components/modals/SettingsModal";
 
-interface SidebarProps {
-  mobileOpen: boolean;
-  onMobileClose: () => void;
-}
-
-export default function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
+export default function Sidebar() {
+  const pathname = usePathname();
+  const isRoomRoot = pathname === "/rooms";
   return (
     <>
-      {/* Mobile overlay */}
-      {mobileOpen && (
-        <div
-          onClick={onMobileClose}
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 20,
-            background: "var(--bg-overlay)",
-            backdropFilter: "blur(2px)",
-          }}
-        />
-      )}
-
       {/* Sidebar */}
       <aside
+        className={!isRoomRoot ? "hide-on-mobile" : "show-on-mobile"}
         style={{
           width: "var(--sidebar-width)",
           flexShrink: 0,
@@ -41,16 +25,6 @@ export default function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
           height: "100%",
           position: "relative",
           zIndex: 30,
-          transition: "transform 0.25s ease",
-          // Mobile: slide in/out
-          ...(typeof window !== "undefined" && window.innerWidth < 768
-            ? {
-                position: "fixed" as const,
-                left: 0,
-                top: 0,
-                transform: mobileOpen ? "translateX(0)" : "translateX(-100%)",
-              }
-            : {}),
         }}
       >
         {/* Header */}

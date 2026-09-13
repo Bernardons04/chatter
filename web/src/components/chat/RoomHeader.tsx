@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { Room } from "@/types";
 
 interface RoomHeaderProps {
@@ -33,6 +34,20 @@ export default function RoomHeader({ room }: RoomHeaderProps) {
     >
       {/* Room name */}
       <div style={{ display: "flex", alignItems: "center", gap: "0.375rem", flex: 1, minWidth: 0 }}>
+        <Link
+          href="/rooms"
+          className="mobile-back-btn"
+          style={{
+            textDecoration: "none",
+            color: "var(--text-secondary)",
+            fontSize: "1.25rem",
+            marginRight: "0.25rem",
+            cursor: "pointer",
+          }}
+          aria-label="Back to rooms"
+        >
+          ←
+        </Link>
         <span style={{ color: "var(--text-muted)", fontSize: "1rem", fontWeight: 300 }}>#</span>
         <h2
           style={{

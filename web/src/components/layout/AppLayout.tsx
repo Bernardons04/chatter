@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Sidebar from "./Sidebar";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+  const isRoomRoot = pathname === "/rooms";
 
   return (
     <div
@@ -15,10 +16,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         background: "var(--bg-base)",
       }}
     >
-      <Sidebar mobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
+      <Sidebar />
 
       {/* Main area */}
       <main
+        className={isRoomRoot ? "hide-on-mobile" : "show-on-mobile"}
         style={{
           flex: 1,
           display: "flex",
@@ -27,61 +29,24 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           position: "relative",
         }}
       >
-        {/* Mobile top bar */}
-        <div
-          className="mobile-topbar"
-          style={{
-            display: "none",
-            height: "61px",
-            padding: "0.75rem 1rem",
-            borderBottom: "1px solid var(--border)",
-            background: "var(--bg-sidebar)",
-            alignItems: "center",
-            gap: "0.75rem",
-            flexShrink: 0,
-          }}
-        >
-          <button
-            onClick={() => setMobileOpen(true)}
-            aria-label="Open menu"
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "var(--text-secondary)",
-              fontSize: "1.25rem",
-              padding: 0,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            ☰
-          </button>
-          <span
-            style={{
-              fontSize: "0.9375rem",
-              fontWeight: 700,
-              color: "var(--text-primary)",
-            }}
-          >
-            Chatter
-          </span>
-        </div>
-
         {children}
       </main>
 
       <style>{`
+        .mobile-back-btn {
+          display: none !important;
+        }
         @media (max-width: 768px) {
-          .mobile-topbar {
-            display: flex !important;
+          .hide-on-mobile {
+            display: none !important;
           }
-          aside {
-            position: fixed !important;
-            left: 0;
-            top: 0;
-            height: 100dvh;
-            z-index: 30;
+          .show-on-mobile {
+            display: flex !important;
+            width: 100% !important;
+            flex: 1 !important;
+          }
+          .mobile-back-btn {
+            display: flex !important;
           }
         }
       `}</style>
