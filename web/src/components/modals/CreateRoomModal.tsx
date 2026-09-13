@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Modal from "@/components/ui/Modal";
 import { saveRoomPassword } from "@/lib/localStorage";
 import { useChatStore } from "@/store/chatStore";
@@ -8,6 +9,7 @@ import chatterWs from "@/lib/websocket";
 import type { WsIncoming } from "@/types";
 
 export default function CreateRoomModal() {
+  const router = useRouter();
   const { state, dispatch } = useChatStore();
   const open = state.modals.createRoom;
 
@@ -51,6 +53,7 @@ export default function CreateRoomModal() {
         unsub();
         setLoading(false);
         close();
+        router.push(`/rooms/${data.room.id}`);
       } else if (data.type === "error") {
         unsub();
         setLoading(false);
